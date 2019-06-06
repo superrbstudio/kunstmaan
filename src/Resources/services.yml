@@ -1,0 +1,5 @@
+services:
+    kunstmaan_admin.versionchecker:
+        class: Superrb\KunstmaanAddonsBundle\VersionCheck\VersionChecker
+        arguments: ['@service_container', '@kunstmaan_admin.cache']
+        public: true
