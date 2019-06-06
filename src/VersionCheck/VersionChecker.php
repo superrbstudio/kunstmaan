@@ -1,6 +1,6 @@
 <?php
 
-namespace Superrb\KunstmaanCompanyBundle\VersionCheck;
+namespace Superrb\KunstmaanAddonsBundle\VersionCheck;
 
 use Kunstmaan\AdminBundle\Helper\VersionCheck\VersionChecker as BaseVersionChecker;
 use Kunstmaan\AdminBundle\Helper\VersionCheck\Exception;

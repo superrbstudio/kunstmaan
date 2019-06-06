@@ -1,6 +1,6 @@
 <?php
 
-namespace Superrb\MemcachedHandlerBundle;
+namespace Superrb\KunstmaanAddonsBundle;
 
 use Superrb\KunstmaanAddonsBundle\DependencyInjection\SuperrbKunstmaanAddonsExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
