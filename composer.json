@@ -13,7 +13,8 @@
     }
   ],
   "require": {
-    "kunstmaan/cms-pack": "~1.0"
+    "kunstmaan/cms-pack": "~1.0",
+    "misd/phone-number-bundle": "^1.3"
   },
   "autoload": {
     "psr-4" : {
