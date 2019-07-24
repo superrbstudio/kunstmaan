@@ -1,2 +1,9 @@
-# kunstmaan
-Addons to Kunsmaan Bundles
+# Kunstmaan Addons
+A selection of addons for Kunstmaan Bundles
+## Installation
+`composer require superrb/kunstmaan-addons`
+## Added features
+- Added version checking for the Kuma Admin area so that a user can see which bundles have been installed.
+- Installs the `misd/phone-number-bundle` (https://packagist.org/packages/misd/phone-number-bundle) so phone number fields and validation can be used on any Kuma website.
+## Issues and Troubleshooting
+All issues: tech@superrb.com
