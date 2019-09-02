@@ -21,6 +21,11 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     const HEADER_KEY = 'Turbolinks-Location';
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * @return string[]
      */
     public static function getSubscribedEvents(): array
