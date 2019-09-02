@@ -26,6 +26,11 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     private $session;
 
     /**
+     * @var bool
+     */
+    private $enabled = false;
+
+    /**
      * @return string[]
      */
     public static function getSubscribedEvents(): array
@@ -37,10 +42,12 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
 
     /**
      * @param SessionInterface $session
+     * @param bool             $enabled
      */
-    public function __construct(SessionInterface $session)
+    public function __construct(SessionInterface $session, bool $enabled = false)
     {
         $this->setSession($session);
+        $this->setEnabled($enabled);
     }
 
     /**
@@ -64,10 +71,34 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return self
+     */
+    private function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
      * @param ResponseEvent $event
      */
     public function onKernelResponse(ResponseEvent $event)
     {
+        if (!$this->isEnabled()) {
+            return;
+        }
+
         /** @var Response $response */
         $response = $event->getResponse();
         $session  = $this->getSession();
