@@ -40,7 +40,27 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
      */
     public function __construct(SessionInterface $session)
     {
+        $this->setSession($session);
+    }
+
+    /**
+     * @return SessionInterface
+     */
+    private function getSession(): SessionInterface
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param SessionInterface $session
+     *
+     * @return self
+     */
+    private function setSession(SessionInterface $session): self
+    {
         $this->session = $session;
+
+        return $this;
     }
 
     /**
@@ -50,12 +70,13 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     {
         /** @var Response $response */
         $response = $event->getResponse();
+        $session  = $this->getSession();
 
         if ($response instanceof RedirectResponse) {
-            $this->session->set(self::SESSION_KEY, $response->getTargetUrl());
-        } elseif ($url = $this->session->get(self::SESSION_KEY)) {
+            $session->set(self::SESSION_KEY, $response->getTargetUrl());
+        } elseif ($url = $session->get(self::SESSION_KEY)) {
             $response->headers->set(self::HEADER_KEY, $url);
-            $this->session->set(self::SESSION_KEY, null);
+            $session->set(self::SESSION_KEY, null);
         }
     }
 }
