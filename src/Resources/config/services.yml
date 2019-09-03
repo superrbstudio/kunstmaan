@@ -1,4 +1,5 @@
 parameters:
+    env(TURBOLINKS_ENABLED): false
     turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
 
 services:
