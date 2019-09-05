@@ -1,6 +1,13 @@
 parameters:
     env(TURBOLINKS_ENABLED): false
     turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
+    database_proto: "%env(string:DATABASE_PROTO)%"
+    database_host: "%env(resolve:DATABASE_HOST)%"
+    database_port: "%env(int:DATABASE_PORT)%"
+    database_user: "%env(string:DATABASE_USER)%"
+    database_pass: "%env(string:DATABASE_PASS)%"
+    database_name: "%env(string:DATABASE_NAME)%"
+    database_extra: "%env(string:DATABASE_EXTRA)%"
 
 services:
     kunstmaan_admin.versionchecker:
@@ -14,3 +21,11 @@ services:
         public: true
         tags:
             - "kernel.event_subscriber"
+
+    kunstmaan_addons.session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - "mysql:dbname=%database_name%; host=%database_host%; port=%database_port%"
+            - { db_table: 'kuma_session', db_username: "%database_user%", db_password: "%database_pass%" }
+        public: true
+
