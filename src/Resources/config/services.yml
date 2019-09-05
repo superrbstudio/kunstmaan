@@ -26,6 +26,14 @@ services:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
             - "mysql:dbname=%database_name%; host=%database_host%; port=%database_port%"
-            - { db_table: 'kuma_session', db_username: "%database_user%", db_password: "%database_pass%" }
+            - {
+                  db_table: "kuma_session",
+                  db_username: "%database_user%",
+                  db_password: "%database_pass%",
+              }
         public: true
 
+    placeholder_image_filter:
+        class: Superrb\KunstmaanAddonsBundle\Service\PlaceholderImage
+        tags:
+            - { name: "liip_imagine.filter.loader", loader: placeholder_image }

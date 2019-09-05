@@ -87,6 +87,7 @@ Or use migrations
 - Installs the `misd/phone-number-bundle` (https://packagist.org/packages/misd/phone-number-bundle) so phone number fields and validation can be used on any Kuma website.
 - Adds a subscriber for Kernel Response events, that sets the correct headers to allow Turbolinks to follow redirects.
 - Adds a PDO Session handler so sessions are stored in the database, handy for Load Balanced environments
+- Adds a 'placeholder_image' filter for liip_imagine, to generate small fully transparent images used to reserve space in the layout when lazy loading images
 
 ## Issues and Troubleshooting
 All issues: tech@superrb.com
