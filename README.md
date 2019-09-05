@@ -36,7 +36,7 @@ DATABASE_NAME=db_name
 DATABASE_EXTRA=?ssl-mode=REQUIRED
 ```
 
-Change
+Change in `config/packages/doctrine.yaml`
 
 ```yaml
 doctrine:
@@ -48,6 +48,19 @@ to
 doctrine:
     dbal:
         url: "%database_proto%://%database_user%:%database_pass%@%database_host%:%database_port%/%database_name%%database_extra%"
+```
+
+and add the parameters to to the top of that file:
+
+```yaml
+parameters:
+    database_proto: "%env(string:DATABASE_PROTO)%"
+    database_host: "%env(resolve:DATABASE_HOST)%"
+    database_port: "%env(int:DATABASE_PORT)%"
+    database_user: "%env(string:DATABASE_USER)%"
+    database_pass: "%env(string:DATABASE_PASS)%"
+    database_name: "%env(string:DATABASE_NAME)%"
+    database_extra: "%env(string:DATABASE_EXTRA)%"
 ```
 
 ## Configuration
