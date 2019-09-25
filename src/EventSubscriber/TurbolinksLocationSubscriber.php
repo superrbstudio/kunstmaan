@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class TurbolinksLocationSubscriber implements EventSubscriberInterface
 {
@@ -95,7 +96,7 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        if (!$this->isEnabled()) {
+        if (!$this->isEnabled() || HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
 
