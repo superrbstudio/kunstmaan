@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class TurbolinksLocationSubscriber implements EventSubscriberInterface
 {
@@ -91,9 +91,9 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ResponseEvent $event
+     * @param FilterResponseEvent $event
      */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event)
     {
         if (!$this->isEnabled()) {
             return;
