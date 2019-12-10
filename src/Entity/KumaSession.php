@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * KumaSession
  *
- * @ORM\Table(name="kuma_session")
+ * @ORM\Table(name="skab_session")
  * @ORM\Entity()
  */
 class KumaSession
