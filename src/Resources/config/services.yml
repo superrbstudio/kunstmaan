@@ -27,7 +27,6 @@ services:
         arguments:
             - "mysql:dbname=%database_name%; host=%database_host%; port=%database_port%"
             - {
-                  db_table: "skab_session",
                   db_username: "%database_user%",
                   db_password: "%database_pass%",
               }
