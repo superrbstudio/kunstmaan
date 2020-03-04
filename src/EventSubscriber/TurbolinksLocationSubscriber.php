@@ -32,6 +32,13 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     private $enabled = false;
 
     /**
+     * An array of Regexes used to filter out URLs.
+     *
+     * @var string[]
+     */
+    private $exclusionMap = [];
+
+    /**
      * @return string[]
      */
     public static function getSubscribedEvents(): array
@@ -41,29 +48,21 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param SessionInterface $session
-     * @param bool             $enabled
-     */
-    public function __construct(SessionInterface $session, bool $enabled = false)
-    {
+    public function __construct(
+        SessionInterface $session,
+        bool $enabled = false,
+        array $exclusionMap = []
+    ) {
         $this->setSession($session);
         $this->setEnabled($enabled);
+        $this->setExclusionMap($exclusionMap);
     }
 
-    /**
-     * @return SessionInterface
-     */
     private function getSession(): SessionInterface
     {
         return $this->session;
     }
 
-    /**
-     * @param SessionInterface $session
-     *
-     * @return self
-     */
     private function setSession(SessionInterface $session): self
     {
         $this->session = $session;
@@ -71,19 +70,11 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @param bool $enabled
-     *
-     * @return self
-     */
     private function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
@@ -92,8 +83,23 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FilterResponseEvent $event
+     * @return string[]
      */
+    public function getExclusionMap(): array
+    {
+        return $this->exclusionMap;
+    }
+
+    /**
+     * @param string[] $map
+     */
+    private function setExclusionMap(array $map): self
+    {
+        $this->exclusionMap = $map;
+
+        return $this;
+    }
+
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (!$this->isEnabled() || HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
@@ -105,10 +111,25 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
         $session  = $this->getSession();
 
         if ($response instanceof RedirectResponse) {
-            $session->set(self::SESSION_KEY, $response->getTargetUrl());
+            $url = $this->filterUrl($response->getTargetUrl());
+
+            if ($url) {
+                $session->set(self::SESSION_KEY, $url);
+            }
         } elseif ($url = $session->get(self::SESSION_KEY)) {
             $response->headers->set(self::HEADER_KEY, $url);
             $session->set(self::SESSION_KEY, null);
         }
+    }
+
+    protected function filterUrl(string $url): ?string
+    {
+        foreach ($this->getExclusionMap() as $regex) {
+            if (preg_match($regex, $url, $matches)) {
+                return null;
+            }
+        }
+
+        return $url;
     }
 }

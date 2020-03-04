@@ -10,7 +10,11 @@ services:
 
   kunstmaan_addons.turbolinks_location_subscriber:
     class: Superrb\KunstmaanAddonsBundle\EventSubscriber\TurbolinksLocationSubscriber
-    arguments: ["@session", "%turbolinks.enabled%"]
+    arguments:
+      - "@session"
+      - "%turbolinks.enabled%"
+      - ['/^\/media/', '/^\/uploads/', '/^\/admin/']
+
     public: true
     tags:
       - "kernel.event_subscriber"
