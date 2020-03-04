@@ -11,6 +11,7 @@ services:
   kunstmaan_addons.turbolinks_location_subscriber:
     class: Superrb\KunstmaanAddonsBundle\EventSubscriber\TurbolinksLocationSubscriber
     arguments:
+      - "@request_stack"
       - "@session"
       - "%turbolinks.enabled%"
       - ['/^\/media/', '/^\/uploads/', '/^\/admin/']

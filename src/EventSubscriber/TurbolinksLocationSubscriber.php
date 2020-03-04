@@ -4,6 +4,8 @@ namespace Superrb\KunstmaanAddonsBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -20,6 +22,11 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
      * @var string
      */
     const HEADER_KEY = 'Turbolinks-Location';
+
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * @var SessionInterface
@@ -49,16 +56,30 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
     }
 
     public function __construct(
+        RequestStack $requestStack,
         SessionInterface $session,
         bool $enabled = false,
         array $exclusionMap = []
     ) {
+        $this->setRequest($requestStack->getCurrentRequest());
         $this->setSession($session);
         $this->setEnabled($enabled);
         $this->setExclusionMap($exclusionMap);
     }
 
-    private function getSession(): SessionInterface
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    private function setRequest(Request $request): self
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    public function getSession(): SessionInterface
     {
         return $this->session;
     }
@@ -124,8 +145,23 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
 
     protected function filterUrl(string $url): ?string
     {
+        $parts = parse_url($url);
+
+        if (!isset($parts['path'])) {
+            // If path can't be parsed, continue as normal
+            return $url;
+        }
+
+        if (isset($parts['hostname']) && $parts['hostname'] === $this->request->getHttpHost()) {
+            // If URL is external, don't cache it
+            return null;
+        }
+
+        $path = $parts['path'];
+
         foreach ($this->getExclusionMap() as $regex) {
-            if (preg_match($regex, $url, $matches)) {
+            if (preg_match($regex, $path)) {
+                // If URL matches exclusion path, don't cache it
                 return null;
             }
         }
