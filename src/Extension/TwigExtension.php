@@ -7,6 +7,7 @@ use Money\Money;
 use Superrb\KunstmaanAddonsBundle\Entity\Interfaces\LinkableEntityInterface;
 use Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\CountryRenderer;
+use Superrb\KunstmaanAddonsBundle\Renderer\LinkableEntityRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -28,14 +29,21 @@ class TwigExtension
      */
     protected $countryRenderer;
 
+    /**
+     * @var LinkableEntityRenderer
+     */
+    protected $linkableEntityRenderer;
+
     public function __construct(
         MoneyRenderer $moneyRenderer,
         BooleanRenderer $booleanRenderer,
-        CountryRenderer $countryRenderer
+        CountryRenderer $countryRenderer,
+        LinkableEntityRenderer $linkableEntityRenderer
     ) {
-        $this->moneyRenderer   = $moneyRenderer;
-        $this->booleanRenderer = $booleanRenderer;
-        $this->countryRenderer = $countryRenderer;
+        $this->moneyRenderer          = $moneyRenderer;
+        $this->booleanRenderer        = $booleanRenderer;
+        $this->countryRenderer        = $countryRenderer;
+        $this->linkableEntityRenderer = $linkableEntityRenderer;
     }
 
     /**
@@ -89,6 +97,11 @@ class TwigExtension
             new TwigFilter(
                 'country',
                 [$this->countryRenderer, 'render']
+            ),
+            new TwigFilter(
+                'link',
+                [$this->linkableEntityRenderer, 'render'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
