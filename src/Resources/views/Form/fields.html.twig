@@ -1,0 +1,32 @@
+{% block money_row %}
+    {% set type = type|default('number') %}
+    {% set class = (attr.class|default('') ~ ' form-control form-control--input') %}
+    {% set attr = attr|merge({'class': class|trim, 'step': '0.01'}) %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}>
+{% endblock %}
+
+{# Money values #}
+{% block money_value_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+
+        <div class="container form-group" style="margin-left: 0">
+            <div class="row">
+                <div class="col-md-5" style="padding: 0">
+                    {{ form_row(form.amount) }}
+                </div>
+
+                <div class="col-md-7" style="padding: 0 0 0 15px">
+                    {{ form_widget(form.currency) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_help(form) }}
+
+        {{ form_errors(form) }}
+        {{ form_errors(form.parent) }}
+        {{ form_errors(form.amount) }}
+        {{ form_errors(form.currency) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+# When using Symfony: app/Resources/Money/doctrine/Currency.orm.yml
+Money\Currency:
+  type: embeddable
+  fields:
+    code:
+      type: string
+      length: 3
