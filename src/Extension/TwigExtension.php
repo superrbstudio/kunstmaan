@@ -5,6 +5,7 @@ namespace Superrb\KunstmaanAddonsBundle\Extension;
 use DateTime;
 use Money\Money;
 use Superrb\KunstmaanAddonsBundle\Entity\Interfaces\LinkableEntityInterface;
+use Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -16,10 +17,17 @@ class TwigExtension
      */
     protected $moneyRenderer;
 
+    /**
+     * @var BooleanRenderer
+     */
+    protected $booleanRenderer;
+
     public function __construct(
-        MoneyRenderer $moneyRenderer
+        MoneyRenderer $moneyRenderer,
+        BooleanRenderer $booleanRenderer
     ) {
         $this->moneyRenderer   = $moneyRenderer;
+        $this->booleanRenderer = $booleanRenderer;
     }
 
     /**
@@ -46,6 +54,12 @@ class TwigExtension
                     return $value instanceof LinkableEntityInterface;
                 }
             ),
+            new TwigTest(
+                'boolean',
+                function ($value) {
+                    return is_bool($value);
+                }
+            ),
         ];
     }
 
@@ -58,6 +72,11 @@ class TwigExtension
             new TwigFilter(
                 'money',
                 [$this->moneyRenderer, 'render']
+            ),
+            new TwigFilter(
+                'bool',
+                [$this->booleanRenderer, 'render'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
