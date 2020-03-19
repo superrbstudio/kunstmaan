@@ -18,7 +18,7 @@ class PlaceholderImage implements LoaderInterface
     {
         $imagick = $image->getImagick();
 
-        if (method_exists($imagick, 'setImageAlpha') {
+        if (method_exists($imagick, 'setImageAlpha')) {
             $imagick->setImageAlpha(0.0);
         } else {
             $imagick->setImageOpacity(0);
