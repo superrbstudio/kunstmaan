@@ -2,7 +2,9 @@
 
 namespace Superrb\KunstmaanAddonsBundle\Extension;
 
+use DateTime;
 use Money\Money;
+use Superrb\KunstmaanAddonsBundle\Entity\Interfaces\LinkableEntityInterface;
 use Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -30,6 +32,18 @@ class TwigExtension
                 'money',
                 function ($value) {
                     return $value instanceof Money;
+                }
+            ),
+            new TwigTest(
+                'date',
+                function ($value) {
+                    return $value instanceof DateTime;
+                }
+            ),
+            new TwigTest(
+                'linkable',
+                function ($value) {
+                    return $value instanceof LinkableEntityInterface;
                 }
             ),
         ];
