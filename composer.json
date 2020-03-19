@@ -14,10 +14,11 @@
   ],
   "require": {
     "kunstmaan/cms-pack": "~1.0",
-    "misd/phone-number-bundle": "^1.3"
+    "misd/phone-number-bundle": "^1.3",
+    "superrb/google-recaptcha": "^1.0"
   },
   "autoload": {
-    "psr-4" : {
+    "psr-4": {
       "Superrb\\KunstmaanAddonsBundle\\": "src/"
     }
   },
