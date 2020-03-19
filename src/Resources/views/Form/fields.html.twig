@@ -30,3 +30,28 @@
         {{ form_errors(form.currency) }}
     </div>
 {% endblock %}
+
+{% block read_only_value_widget %}
+    <div {{ block('widget_attributes') }}>
+        {% if form.vars.value is linkable %}
+            {% set route = form.vars.value.route %}
+            {% set label = form.vars.value.label %}
+            {% set suffix = form.vars.value.labelSuffix %}
+            {% if app.request.requestUri matches '{^/admin}' %}
+                {% set route = form.vars.value.adminRoute %}
+                {% set label = form.vars.value.adminLabel %}
+                {% set suffix = form.vars.value.adminLabelSuffix %}
+            {% endif %}
+
+            <a href="{{ path(route, { 'id': form.vars.value.id }) }}">{{ label | trans | nl2br }}</a> {{ suffix }}
+        {% elseif form.parent is not empty and form.parent.vars.data is not empty and attribute(form.parent.vars.data, name) is defined and attribute(form.parent.vars.data, name) is boolean %}
+            {{ attribute(form.parent.vars.data, name) | bool }}
+        {% elseif form.vars.value is money %}
+            {{ form.vars.value | money }}
+        {% elseif form.vars.value is date %}
+            {{ form.vars.value | localizeddate }}
+        {% else %}
+            {{ form.vars.value | trans | raw | nl2br }}
+        {% endif %}
+    </div>
+{% endblock %}
