@@ -6,6 +6,7 @@ use DateTime;
 use Money\Money;
 use Superrb\KunstmaanAddonsBundle\Entity\Interfaces\LinkableEntityInterface;
 use Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer;
+use Superrb\KunstmaanAddonsBundle\Renderer\CountryRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -22,12 +23,19 @@ class TwigExtension
      */
     protected $booleanRenderer;
 
+    /**
+     * @var CountryRenderer
+     */
+    protected $countryRenderer;
+
     public function __construct(
         MoneyRenderer $moneyRenderer,
-        BooleanRenderer $booleanRenderer
+        BooleanRenderer $booleanRenderer,
+        CountryRenderer $countryRenderer
     ) {
         $this->moneyRenderer   = $moneyRenderer;
         $this->booleanRenderer = $booleanRenderer;
+        $this->countryRenderer = $countryRenderer;
     }
 
     /**
@@ -77,6 +85,10 @@ class TwigExtension
                 'bool',
                 [$this->booleanRenderer, 'render'],
                 ['is_safe' => ['html']]
+            ),
+            new TwigFilter(
+                'country',
+                [$this->countryRenderer, 'render']
             ),
         ];
     }
