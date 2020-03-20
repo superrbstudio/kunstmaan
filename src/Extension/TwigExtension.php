@@ -9,10 +9,11 @@ use Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\CountryRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\LinkableEntityRenderer;
 use Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
 
-class TwigExtension
+class TwigExtension extends AbstractExtension
 {
     /**
      * @var MoneyRenderer
