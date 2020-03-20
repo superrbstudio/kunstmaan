@@ -1,0 +1,13 @@
+doctrine:
+  dbal:
+    types:
+      # To persist libphonenumber\PhoneNumber objects, add the Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType mapping to your application's config.
+      # This requires: doctrine/doctrine-bundle
+      phone_number: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+
+  orm:
+    mappings:
+      Money:
+        type: yml
+        dir: "%kernel.root_dir%/../vendor/superrb/kunstmaan-addons/src/Resources/Money/doctrine"
+        prefix: Money

@@ -1,0 +1,3 @@
+twig:
+  form_themes:
+    - "%kernel.root_dir%/../vendor/superrb/kunstmaan-addons/src/Resources/views/Form/fields.html.twig"

@@ -1,45 +1,26 @@
 parameters:
-    env(TURBOLINKS_ENABLED): false
-    turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
+  env(TURBOLINKS_ENABLED): false
+  turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
 
 services:
-    kunstmaan_admin.versionchecker:
-        class: Superrb\KunstmaanAddonsBundle\VersionCheck\VersionChecker
-        arguments:
-            ["@service_container", "@kunstmaan_admin.cache", "@translator"]
-        public: true
+  kunstmaan_admin.versionchecker:
+    class: Superrb\KunstmaanAddonsBundle\VersionCheck\VersionChecker
+    arguments: ["@service_container", "@kunstmaan_admin.cache", "@translator"]
+    public: true
 
-    kunstmaan_addons.turbolinks_location_subscriber:
-        class: Superrb\KunstmaanAddonsBundle\EventSubscriber\TurbolinksLocationSubscriber
-        arguments: ["@session", "%turbolinks.enabled%"]
-        public: true
-        tags:
-            - "kernel.event_subscriber"
+  kunstmaan_addons.turbolinks_location_subscriber:
+    class: Superrb\KunstmaanAddonsBundle\EventSubscriber\TurbolinksLocationSubscriber
+    arguments: ["@session", "%turbolinks.enabled%"]
+    public: true
+    tags:
+      - "kernel.event_subscriber"
 
-    placeholder_image_filter:
-        class: Superrb\KunstmaanAddonsBundle\Service\PlaceholderImage
-        tags:
-            - { name: "liip_imagine.filter.loader", loader: placeholder_image }
+  placeholder_image_filter:
+    class: Superrb\KunstmaanAddonsBundle\Service\PlaceholderImage
+    tags:
+      - { name: "liip_imagine.filter.loader", loader: placeholder_image }
 
-    kunstmaan_addons.twig.extension:
-        class: Superrb\KunstmaanAddonsBundle\Extension\TwigExtension
-        tags:
-            - "twig.extension"
-
-doctrine:
-    dbal:
-        types:
-            # To persist libphonenumber\PhoneNumber objects, add the Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType mapping to your application's config.
-            # This requires: doctrine/doctrine-bundle
-            phone_number: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
-
-    orm:
-        mappings:
-            Money:
-                type: yml
-                dir: "%kernel.root_dir%/../vendor/superrb/kunstmaan-addons/src/Resources/Money/doctrine"
-                prefix: Money
-
-twig:
-    form_themes:
-        - "%kernel.root_dir%/../vendor/superrb/kunstmaan-addons/src/Resources/views/Form/fields.html.twig"
+  kunstmaan_addons.twig.extension:
+    class: Superrb\KunstmaanAddonsBundle\Extension\TwigExtension
+    tags:
+      - "twig.extension"
