@@ -7,7 +7,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Throwable;
 use Twig\Environment;
 
 class MailerService
@@ -23,11 +22,6 @@ class MailerService
     protected $templating;
 
     /**
-     * @var string[]
-     */
-    protected $fromAddress;
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
@@ -38,12 +32,12 @@ class MailerService
     protected $logger;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $emailFrom;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $emailBcc;
 
@@ -52,8 +46,8 @@ class MailerService
         Environment $templating,
         TranslatorInterface $translator,
         LoggerInterface $logger,
-        string $emailFrom,
-        string $emailBcc
+        $emailFrom,
+        $emailBcc
     ) {
         $this->mailer              = $mailer;
         $this->templating          = $templating;
@@ -63,29 +57,23 @@ class MailerService
         $this->emailBcc            = $emailBcc;
     }
 
-    public function send(string $template, string $email, array $options, ?string $siteId = null)
+    public function send(string $template, string $email, array $options = [])
     {
-        try {
-            // Render the message content
-            $body = $this->templating->render($template, $options);
+        // Render the message content
+        $body = $this->templating->render($template, $options);
 
-            $mail = (new Email())
-                ->subject($this->translator->trans($options['subject'], [], $this->siteId))
-                ->from($this->formatAddress($options['from'] ?? $this->fromAddress))
-                ->replyTo($this->formatAddress($options['reply_to'] ?? $this->fromAddress))
-                ->to($this->formatAddress($email))
-                ->addBcc($this->emailBcc)
-                ->html($body);
+        $mail = (new Email())
+            ->subject($this->translator->trans($options['subject']))
+            ->from($this->formatAddress($options['from'] ?? $this->emailFrom))
+            ->replyTo($this->formatAddress($options['reply_to'] ?? $this->emailFrom))
+            ->to($this->formatAddress($email))
+            ->addBcc($this->emailBcc)
+            ->html($body);
 
-            // Send the message
-            $this->mailer->send($mail);
+        // Send the message
+        $this->mailer->send($mail);
 
-            return true;
-        } catch (Throwable $e) {
-            $this->logger->critical('Error "'.$e->getMessage().'" thrown whilst sending email');
-
-            return false;
-        }
+        return true;
     }
 
     /**
