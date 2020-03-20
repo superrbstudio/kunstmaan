@@ -22,5 +22,28 @@ services:
 
   kunstmaan_addons.twig.extension:
     class: Superrb\KunstmaanAddonsBundle\Extension\TwigExtension
+    arguments:
+      $moneyRenderer: '@Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer'
+      $booleanRenderer: '@Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer'
+      $linkableEntityRenderer: '@Superrb\KunstmaanAddonsBundle\Renderer\LinkableEntityRenderer'
+      $countryRenderer: '@Superrb\KunstmaanAddonsBundle\Renderer\CountryRenderer'
     tags:
       - "twig.extension"
+
+  Superrb\KunstmaanAddonsBundle\Renderer\MoneyRenderer:
+    public: true
+
+  Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer:
+    public: true
+
+  Superrb\KunstmaanAddonsBundle\Renderer\LinkableEntityRenderer:
+    public: true
+    arguments:
+      $requestStack: '@Symfony\Component\HttpFoundation\RequestStack'
+      $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+      $translator: '@Symfony\Contracts\Translation\TranslatorInterface'
+
+  Superrb\KunstmaanAddonsBundle\Renderer\CountryRenderer:
+    public: true
+    arguments:
+      $requestStack: '@Symfony\Component\HttpFoundation\RequestStack'
