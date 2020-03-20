@@ -1,6 +1,6 @@
 <?php
 
-namespace Superrb\KunstmaanAddonsBundle\Controller\Api;
+namespace Superrb\KunstmaanAddonsBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

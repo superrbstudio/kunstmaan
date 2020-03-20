@@ -47,3 +47,13 @@ services:
     public: true
     arguments:
       $requestStack: '@Symfony\Component\HttpFoundation\RequestStack'
+
+  Superrb\KunstmaanAddonsBundle\Service\MailerService:
+    public: true
+    arguments:
+      $mailer: '@Symfony\Component\Mailer\MailerInterface'
+      $templating: '@Twig\Environment'
+      $translator: '@Symfony\Contracts\Translation\TranslatorInterface'
+      $logger: '@Psr\Log\LoggerInterface'
+      $emailFrom: "%enquiryfrom%"
+      $emailBcc: "%enquirybcc%"
