@@ -57,7 +57,12 @@ class MailerService
         $this->emailBcc            = $emailBcc;
     }
 
-    public function send(string $template, string $email, array $options = [])
+    /**
+     * @param string|array $email
+     *
+     * @return void
+     */
+    public function send(string $template, $email, array $options = [])
     {
         // Render the message content
         $body = $this->templating->render($template, $options);
