@@ -10,7 +10,11 @@ A selection of addons for Kunstmaan Bundles
 composer require superrb/kunstmaan-addons
 ```
 
-Add `Superrb\KunstmaanAddonsBundle\SuperrbKunstmaanAddonsBundle::class => ['all' => true]`, to `config/bundles.php`
+Add the following to `config/bundles.php`
+```
+Superrb\KunstmaanAddonsBundle\SuperrbKunstmaanAddonsBundle::class => ['all' => true],
+Superrb\GoogleRecaptchaBundle\SuperrbGoogleRecaptchaBundle::class => ['all' => true] // If you plan to use Google Recaptcha
+```
 
 ### Step 2: Add environment variables
 
