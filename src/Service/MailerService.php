@@ -59,10 +59,26 @@ class MailerService
 
     /**
      * @param string|array $email
-     *
-     * @return void
      */
-    public function send(string $template, $email, array $options = [])
+    public function send(string $template, $email, array $options = []): bool
+    {
+        $mail = $this->createMessage($template, $email, $options);
+
+        // Allow for using an alternative transport
+        if (isset($options['transport'])) {
+            $mail->getHeaders()->addTextHeader('X-Transport', $options['transport']);
+        }
+
+        // Send the message
+        $this->mailer->send($mail);
+
+        return true;
+    }
+
+    /**
+     * @param string|array $email
+     */
+    public function createMessage(string $template, $email, array $options = []): Email
     {
         // Render the message content
         $body = $this->templating->render($template, $options);
@@ -75,10 +91,7 @@ class MailerService
             ->addBcc($this->emailBcc)
             ->html($body);
 
-        // Send the message
-        $this->mailer->send($mail);
-
-        return true;
+        return $mail;
     }
 
     /**
