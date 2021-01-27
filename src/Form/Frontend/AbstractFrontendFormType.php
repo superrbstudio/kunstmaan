@@ -44,7 +44,7 @@ class AbstractFrontendFormType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'recaptcha' => true,
+            'recaptcha' => false,
             'attr'      => [
                 'data-js-submit' => 'true',
             ],
