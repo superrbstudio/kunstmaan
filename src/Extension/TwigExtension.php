@@ -3,6 +3,7 @@
 namespace Superrb\KunstmaanAddonsBundle\Extension;
 
 use DateTime;
+use libphonenumber\PhoneNumber;
 use Money\Money;
 use Superrb\KunstmaanAddonsBundle\Entity\Interfaces\LinkableEntityInterface;
 use Superrb\KunstmaanAddonsBundle\Renderer\BooleanRenderer;
@@ -75,6 +76,12 @@ class TwigExtension extends AbstractExtension
                 'boolean',
                 function ($value) {
                     return is_bool($value);
+                }
+            ),
+            new TwigTest(
+                'phone_number',
+                function ($value) {
+                    return $value instanceof PhoneNumber;
                 }
             ),
         ];
