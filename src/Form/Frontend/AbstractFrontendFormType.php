@@ -3,6 +3,7 @@
 namespace Superrb\KunstmaanAddonsBundle\Form\Frontend;
 
 use Superrb\GoogleRecaptchaBundle\Validator\Constraint\GoogleRecaptcha;
+use Superrb\KunstmaanAddonsBundle\Service\RecaptchaFlagService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,9 +17,15 @@ class AbstractFrontendFormType extends AbstractType
      */
     protected $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    /**
+     * @var bool
+     */
+    protected $recaptchaEnabled;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, RecaptchaFlagService $recaptchaFlagService)
     {
-        $this->urlGenerator = $urlGenerator;
+        $this->urlGenerator     = $urlGenerator;
+        $this->recaptchaEnabled = $recaptchaFlagService->isRecaptchaEnabled();
     }
 
     /**
@@ -28,7 +35,7 @@ class AbstractFrontendFormType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        if (!isset($options['recaptcha']) || true === $options['recaptcha']) {
+        if ($this->recaptchaEnabled && (!isset($options['recaptcha']) || true === $options['recaptcha'])) {
             $builder->add('recaptcha', HiddenType::class, [
                 'mapped'      => false,
                 'constraints' => [

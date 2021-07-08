@@ -1,5 +1,6 @@
 parameters:
   env(TURBOLINKS_ENABLED): false
+  recaptcha.enabled: "%env(bool:RECAPTCHA_ENABLED)%"
   turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
 
 services:
@@ -62,3 +63,14 @@ services:
       $logger: '@Psr\Log\LoggerInterface'
       $emailFrom: "%enquiryfrom%"
       $emailBcc: "%enquirybcc%"
+
+  Superrb\KunstmaanAddonsBundle\Form\Frontend\AbstractFrontendFormType:
+    public: true
+    arguments:
+      $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+      $recaptchaFlagService: '@Superrb\KunstmaanAddonsBundle\Service\RecaptchaFlagService'
+
+  Superrb\KunstmaanAddonsBundle\Service\RecaptchaFlagService:
+    public: true
+    arguments:
+      $recaptchaEnabled: '%recaptcha.enabled%'
