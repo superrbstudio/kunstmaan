@@ -4,11 +4,6 @@ parameters:
   turbolinks.enabled: "%env(bool:TURBOLINKS_ENABLED)%"
 
 services:
-  kunstmaan_admin.versionchecker:
-    class: Superrb\KunstmaanAddonsBundle\VersionCheck\VersionChecker
-    arguments: ["@service_container", "@kunstmaan_admin.cache", "@translator"]
-    public: true
-
   kunstmaan_addons.turbolinks_location_subscriber:
     class: Superrb\KunstmaanAddonsBundle\EventSubscriber\TurbolinksLocationSubscriber
     arguments:
