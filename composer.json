@@ -13,7 +13,6 @@
     }
   ],
   "require": {
-    "kunstmaan/cms-pack": "~1.0",
     "odolbeau/phone-number-bundle": "^3.0",
     "moneyphp/money": "^3.2",
     "superrb/google-recaptcha": "^1.0",
