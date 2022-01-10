@@ -39,7 +39,7 @@ class AbstractApiController extends AbstractController
                 $field   = $field->getParent();
             }
 
-            $response['errors'][join(array_reverse($names), '_')] = $error->getMessage();
+            $response['errors'][join('_', array_reverse($names))] = $error->getMessage();
         }
 
         if ($message) {
