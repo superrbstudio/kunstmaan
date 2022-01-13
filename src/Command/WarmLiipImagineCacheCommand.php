@@ -51,7 +51,8 @@ final class WarmLiipImagineCacheCommand extends Command
 
         foreach ($contentTypes as $contentType) {
             $medias = $this->em->getRepository('KunstmaanMediaBundle:Media')->findBy(
-                ['contentType' => $contentType, 'deleted' => false]
+                ['contentType' => $contentType, 'deleted' => false],
+                ['createdAt' => 'DESC']
             );
             /** @var Media $media */
             foreach ($medias as $media) {
