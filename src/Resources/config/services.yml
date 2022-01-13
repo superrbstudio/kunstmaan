@@ -69,3 +69,10 @@ services:
     public: true
     arguments:
       $recaptchaEnabled: '%recaptcha.enabled%'
+
+  kunstmaan_media.command.warmLiipImagineCacheCommand:
+    class: Superrb\KunstmaanAddonsBundle\Command\WarmLiipImagineCacheCommand
+    arguments:
+      - '@doctrine.orm.entity_manager'
+    tags:
+      - { name: console.command }
