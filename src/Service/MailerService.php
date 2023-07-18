@@ -85,8 +85,8 @@ class MailerService
 
         $mail = (new Email())
             ->subject($this->translator->trans($options['subject']))
-            ->from($this->formatAddress($options['from'] ?? $this->emailFrom))
-            ->replyTo($this->formatAddress($options['reply_to'] ?? $this->emailFrom))
+            ->from(...$this->formatAddress($options['from'] ?? $this->emailFrom))
+            ->replyTo(...$this->formatAddress($options['reply_to'] ?? $this->emailFrom))
             ->to(...$this->formatAddress($email))
             ->addBcc($this->emailBcc)
             ->html($body);
