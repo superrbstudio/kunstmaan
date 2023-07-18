@@ -100,9 +100,9 @@ class MailerService
     protected function formatAddress($address): array
     {
         if (is_array($address)) {
-            return array_map(function ($email) use ($address) {
-                return new Address($email, $address[$email]);
-            }, array_keys($address));
+            return array_map(function (string $email, string $name) {
+                return new Address($email, $name);
+            }, array_keys($address), array_values($address));
         }
 
         return [new Address($address)];
