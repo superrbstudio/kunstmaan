@@ -49,12 +49,12 @@ class MailerService
         $emailFrom,
         $emailBcc
     ) {
-        $this->mailer              = $mailer;
-        $this->templating          = $templating;
-        $this->translator          = $translator;
-        $this->logger              = $logger;
-        $this->emailFrom           = $emailFrom;
-        $this->emailBcc            = $emailBcc;
+        $this->mailer     = $mailer;
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->logger     = $logger;
+        $this->emailFrom  = $emailFrom;
+        $this->emailBcc   = $emailBcc;
     }
 
     /**
@@ -97,12 +97,12 @@ class MailerService
     /**
      * @param string|string[] $address
      */
-    protected function formatAddress($address): Address
+    protected function formatAddress($address): Address|array
     {
         if (is_array($address)) {
-            foreach ($address as $email => $name) {
-                return new Address($email, $name);
-            }
+            return array_map(function ($email) use ($address) {
+                return new Address($email, $address[$email]);
+            }, array_keys($address));
         }
 
         return new Address($address);
