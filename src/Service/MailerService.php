@@ -87,7 +87,7 @@ class MailerService
             ->subject($this->translator->trans($options['subject']))
             ->from($this->formatAddress($options['from'] ?? $this->emailFrom))
             ->replyTo($this->formatAddress($options['reply_to'] ?? $this->emailFrom))
-            ->to($this->formatAddress($email))
+            ->to(...$this->formatAddress($email))
             ->addBcc($this->emailBcc)
             ->html($body);
 
@@ -97,7 +97,7 @@ class MailerService
     /**
      * @param string|string[] $address
      */
-    protected function formatAddress($address): Address|array
+    protected function formatAddress($address): array
     {
         if (is_array($address)) {
             return array_map(function ($email) use ($address) {
@@ -105,6 +105,6 @@ class MailerService
             }, array_keys($address));
         }
 
-        return new Address($address);
+        return [new Address($address)];
     }
 }
