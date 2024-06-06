@@ -57,12 +57,11 @@ class TurbolinksLocationSubscriber implements EventSubscriberInterface
 
     public function __construct(
         RequestStack $requestStack,
-        SessionInterface $session,
         bool $enabled = false,
         array $exclusionMap = []
     ) {
         $this->setRequest($requestStack->getCurrentRequest());
-        $this->setSession($session);
+        $this->setSession($requestStack->getCurrentRequest()->getSession());
         $this->setEnabled($enabled);
         $this->setExclusionMap($exclusionMap);
     }
